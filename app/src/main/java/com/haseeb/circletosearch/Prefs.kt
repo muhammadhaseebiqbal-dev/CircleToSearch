@@ -1,4 +1,4 @@
-package com.example.circletosearch
+package com.haseeb.circletosearch
 
 /** Shared constants for SharedPreferences keys and intent extras. */
 object Prefs {

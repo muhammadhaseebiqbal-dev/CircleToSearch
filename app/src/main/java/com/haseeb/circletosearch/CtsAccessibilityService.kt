@@ -1,4 +1,4 @@
-package com.example.circletosearch
+package com.haseeb.circletosearch
 
 import android.annotation.SuppressLint
 import android.accessibilityservice.AccessibilityService
