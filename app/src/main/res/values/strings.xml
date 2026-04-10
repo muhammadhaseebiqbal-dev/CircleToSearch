@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Circle to Search</string>
+    <string name="app_subtitle">Navigation interceptor</string>
+
+    <!-- Status -->
+    <string name="status_active">Active</string>
+    <string name="status_inactive">Inactive</string>
+    <string name="status_no_permission">Permission required</string>
+    <string name="status_desc_running">Long-press the nav area to trigger</string>
+    <string name="status_desc_stopped">Enable the Accessibility Service</string>
+    <string name="status_desc_permission">Enable the Accessibility Service first</string>
+
+    <!-- Buttons -->
+    <string name="btn_activate">Activate Service</string>
+    <string name="btn_deactivate">Deactivate Service</string>
+    <string name="btn_grant_permission">Grant Permission</string>
+
+    <!-- Toasts -->
+    <string name="toast_started">Circle to Search is now active</string>
+    <string name="toast_stopped">Service deactivated</string>
+    <string name="toast_permission_granted">Permission granted. You can now activate the service.</string>
+    <string name="toast_permission_denied">Overlay permission is required to run.</string>
+
+    <!-- Section headers -->
+    <string name="section_status">STATUS</string>
+    <string name="section_gesture_nav">GESTURE NAVIGATION</string>
+    <string name="section_button_nav">3-BUTTON NAVIGATION</string>
+    <string name="section_haptics">HAPTICS</string>
+
+    <!-- Settings labels -->
+    <string name="label_gesture_overlay">Gesture area overlay</string>
+    <string name="label_gesture_overlay_sub">Transparent strip over navigation pill</string>
+    <string name="label_gesture_size">Touch area size</string>
+    <string name="label_gesture_size_sub">Increase for better accuracy</string>
+    <string name="label_btn_assistant">Accessibility Settings</string>
+    <string name="label_btn_assistant_sub">Enable the service to use the Navigation Bar Accessibility Button</string>
+    <string name="label_sensitivity">Long-press sensitivity</string>
+    <string name="label_sensitivity_sub">Hold duration before triggering</string>
+    <string name="label_launch_vibrate">Vibrate on activation</string>
+    <string name="label_launch_vibrate_sub">Pulse when service starts</string>
+    <string name="label_trigger_vibrate">Vibrate on trigger</string>
+    <string name="label_trigger_vibrate_sub">Feedback when Circle to Search fires</string>
+    <string name="label_intensity">Vibration intensity</string>
+
+    <!-- Seekbar labels -->
+    <string name="threshold_fast">300ms</string>
+    <string name="threshold_normal">500ms</string>
+    <string name="threshold_slow">700ms</string>
+    <string name="intensity_none">None</string>
+    <string name="intensity_light">Light</string>
+    <string name="intensity_medium">Medium</string>
+    <string name="intensity_strong">Strong</string>
+    
+    <string name="size_small">Small</string>
+    <string name="size_medium">Medium</string>
+    <string name="size_large">Large</string>
+    <string name="size_extra_large">Extra Large</string>
+</resources>

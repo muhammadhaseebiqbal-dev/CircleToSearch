@@ -1,0 +1,36 @@
+# ---------------------------------------
+# Kotlin / Gradle / IntelliJ .gitignore
+# ---------------------------------------
+
+# Build outputs
+/build/
+/out/
+/target/
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.properties
+!gradle/wrapper/gradle-wrapper.jar
+
+# Kotlin compiler
+.kotlinc/
+
+# IntelliJ Idea
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# MacOS files
+.DS_Store
+
+# Logs
+*.log
+
+# Kotlin multiplatform
+**/kotlin-js-store/
+
+# Local environment files
+.env
+.env.*

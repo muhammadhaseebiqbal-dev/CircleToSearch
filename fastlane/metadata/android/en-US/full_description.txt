@@ -1,0 +1,13 @@
+Circle to Search Helper
+
+A utility app designed to seamlessly unlock Google's "Circle to Search" functionality on Android devices. While Google limits the official triggers, this neat overlay helps bridge the gap by letting you trigger the underlying omni entry-point directly.
+
+Core Features:
+- Native Accessibility Service integration to summon Circle to Search cleanly.
+- Adds an Accessibility Button helper to your 3-button navigation bar.
+- Implements a transparent Gesture bottom-screen overlay so you can trigger it simply by resting your thumb. 
+- Fully customizable Vibration intensity, Haptic timings, and area geometries.
+- Cleanly triggers without requiring ROOT on compatible systems.
+
+How it works:
+Instead of intercepting Google Assistant, it activates the `omni_entry` backdoor using hidden Android APIs built right into Android. Because it's an accessibility service, there's no sticky notification to worry about keeping alive!

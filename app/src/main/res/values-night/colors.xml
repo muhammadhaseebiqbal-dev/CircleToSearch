@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Page / card backgrounds (dark mode - AMOLED) -->
+    <color name="bg_primary">#000000</color>
+    <color name="bg_card">#1C1C1C</color>
+    <color name="bg_elevated">#2C2C2C</color>
+    <color name="stroke">#2C2C2C</color>
+    <color name="brand_blue_subtle">#0D1E3A</color>
+
+    <!-- Text (dark mode) -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#9E9E9E</color>
+    <color name="text_tertiary">#666666</color>
+    <color name="section_header">#808080</color>
+
+    <!-- Status bg (dark mode) -->
+    <color name="status_active_bg">#0D2B1A</color>
+    <color name="status_inactive_bg">#2B0D0D</color>
+</resources>

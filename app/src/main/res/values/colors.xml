@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Samsung One UI accent blue -->
+    <color name="brand_blue">#2484FF</color>
+    <color name="brand_blue_dark">#1877F2</color>
+    <color name="brand_blue_subtle">#E8F1FF</color>
+
+    <!-- Page / card backgrounds (light mode) -->
+    <color name="bg_primary">#F3F3F3</color>
+    <color name="bg_card">#FFFFFF</color>
+    <color name="bg_elevated">#F8F8F8</color>
+    <color name="stroke">#E8E8E8</color>
+
+    <!-- Text (light mode) -->
+    <color name="text_primary">#000000</color>
+    <color name="text_secondary">#616161</color>
+    <color name="text_tertiary">#9E9E9E</color>
+    <color name="section_header">#767676</color>
+
+    <!-- Status -->
+    <color name="status_active">#34C759</color>
+    <color name="status_inactive">#FF3B30</color>
+    <color name="status_idle">#FF9F0A</color>
+    <color name="status_active_bg">#E6FAF0</color>
+    <color name="status_inactive_bg">#FEECED</color>
+
+    <!-- Floating button -->
+    <color name="float_btn_bg">#CC2484FF</color>
+    <color name="float_btn_bg_pressed">#DD1877F2</color>
+
+    <!-- Fixed -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="overlay_debug">#4DFF0000</color>
+</resources>
