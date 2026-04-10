@@ -55,6 +55,11 @@ Contributions, issues, and feature requests are highly appreciated! Feel free to
 
 ---
 
+## 📄 License
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
 <div align="center">
   <sub>Built with ❤️ by Android Enthusiasts.</sub>
 </div>
