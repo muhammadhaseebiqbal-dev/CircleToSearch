@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.circletosearch"
+    namespace = "com.haseeb.circletosearch"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.circletosearch"
+        applicationId = "com.haseeb.circletosearch"
         minSdk = 29  // Android 10+ required for TYPE_APPLICATION_OVERLAY stability
         targetSdk = 35
         versionCode = 1
