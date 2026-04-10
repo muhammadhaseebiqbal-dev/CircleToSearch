@@ -33,4 +33,6 @@ build/
 
 # Local environment files
 .env
-.env.*
+.env.*keystore
+*.keystore
+*.jks
