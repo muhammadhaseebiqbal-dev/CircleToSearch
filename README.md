@@ -55,8 +55,13 @@ Contributions, issues, and feature requests are highly appreciated! Feel free to
 
 ---
 
+## 💡 Acknowledgements
+- Inspired by [MiCTS](https://github.com/parallelcc/MiCTS).
+
+---
+
 ## 📄 License
-This project is licensed under the [MIT License](./LICENSE).
+This project is licensed under the [GNU General Public License v3.0](./LICENSE).
 
 ---
 
