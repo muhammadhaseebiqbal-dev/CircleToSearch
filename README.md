@@ -39,14 +39,20 @@ Because it operates natively as an **Accessibility Service**, there are no stick
 ## 🛠️ How to Operate
 
 1. **Install and Open:** Launch the application after installation.
-2. **Access Settings:** Tap the **Activate Service** button. This securely reroutes you to the Android Accessibility settings natively on your OS.
+2. **Access Settings:** Tap **Accessibility Settings**.
 3. **Enable Accessibility Service:**
    - Scroll to **Installed apps** and tap on **Circle to Search**.
-   - **Enable** the main toggle.
-   - Most devices will display a prompt for a **Circle to Search shortcut**. Enable that toggle and grant "Allow". (If your system prompts you to select an interaction, such as tapping the accessibility button or holding volume keys, select your preference).
-4. **Trigger Circle to Search!**
+   - Turn on the main service switch if it appears.
+   - If Settings shows only the **Circle to Search shortcut**, turn it on and tap **Allow**. Enable the shortcut to use the accessibility button.
+4. **Trigger your search.**
    - **Using 3-Button Navigation:** Tap the newly added Accessibility (person) shortcut icon anchored to your navigation bar.
    - **Using Gesture Navigation:** Perform a clean long-press at the bottom-center of your screen over the navigation pill. *(Note: The transparent gesture area listener is enabled by default!).*
+
+In the app, open **Search action** and choose **Circle to Search** or **Google Lens**. This choice applies to the long-press gesture, accessibility button, and external shortcut.
+
+To use a back tap, add a **Launch Shortcut** action in [Tap, Tap](https://github.com/KieronQuinn/TapTap) and choose **Trigger search**. You can switch off **Gesture area overlay** if you only want to use the back tap.
+
+When Power saving ends, the app rebuilds the gesture overlay if its accessibility service is still connected, or when Android reconnects it. If Samsung's **Limit apps and Home screen** mode disables the accessibility service in Settings, Android requires you to enable it again. You can add Circle to Search to the allowed apps on Samsung's power-saving Home screen if your device offers it.
 
 ---
 

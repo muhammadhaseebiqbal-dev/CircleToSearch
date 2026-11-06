@@ -3,6 +3,7 @@ package com.haseeb.circletosearch
 /** Shared constants for SharedPreferences keys and intent extras. */
 object Prefs {
     const val FILE = "cts_settings"
+    const val USE_GOOGLE_LENS = "use_google_lens"
 
     // Overlay settings
     const val GESTURE_OVERLAY_ENABLED = "gesture_overlay_enabled"
