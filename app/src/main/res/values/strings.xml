@@ -8,7 +8,8 @@
     <string name="status_inactive">Inactive</string>
     <string name="status_no_permission">Permission required</string>
     <string name="status_desc_running">Long-press the nav area to trigger</string>
-    <string name="status_desc_stopped">Enable the Accessibility Service</string>
+    <string name="status_desc_stopped">Enable Circle to Search in Accessibility settings. If only the shortcut switch appears, turn it on and tap Allow.</string>
+    <string name="status_desc_waiting">Accessibility is enabled. Waiting for Android to connect the service.</string>
     <string name="status_desc_permission">Enable the Accessibility Service first</string>
 
     <!-- Buttons -->
@@ -24,6 +25,7 @@
 
     <!-- Section headers -->
     <string name="section_status">STATUS</string>
+    <string name="section_search_action">Search action</string>
     <string name="section_gesture_nav">GESTURE NAVIGATION</string>
     <string name="section_button_nav">3-BUTTON NAVIGATION</string>
     <string name="section_haptics">HAPTICS</string>
@@ -34,13 +36,13 @@
     <string name="label_gesture_size">Touch area size</string>
     <string name="label_gesture_size_sub">Increase for better accuracy</string>
     <string name="label_btn_assistant">Accessibility Settings</string>
-    <string name="label_btn_assistant_sub">Enable the service to use the Navigation Bar Accessibility Button</string>
+    <string name="label_btn_assistant_sub">Enable the Circle to Search shortcut in Accessibility settings to use the accessibility button.</string>
     <string name="label_sensitivity">Long-press sensitivity</string>
     <string name="label_sensitivity_sub">Hold duration before triggering</string>
     <string name="label_launch_vibrate">Vibrate on activation</string>
     <string name="label_launch_vibrate_sub">Pulse when service starts</string>
     <string name="label_trigger_vibrate">Vibrate on trigger</string>
-    <string name="label_trigger_vibrate_sub">Feedback when Circle to Search fires</string>
+    <string name="label_trigger_vibrate_sub">Feedback when the search gesture or accessibility button fires</string>
     <string name="label_intensity">Vibration intensity</string>
 
     <!-- Seekbar labels -->
@@ -56,4 +58,9 @@
     <string name="size_medium">Medium</string>
     <string name="size_large">Large</string>
     <string name="size_extra_large">Extra Large</string>
+
+    <string name="google_lens">Google Lens</string>
+    <string name="search_action_summary">Choose what the search gesture, accessibility button, and external shortcut open.</string>
+    <string name="search_shortcut">Trigger search</string>
+    <string name="lens_unavailable">Couldn’t open Google Lens. Install or update the Google or Google Lens app.</string>
 </resources>

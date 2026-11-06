@@ -1,24 +1,20 @@
 package com.haseeb.circletosearch
 
+import android.content.ComponentName
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.view.View
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.haseeb.circletosearch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: SharedPreferences
-
-    private val OVERLAY_PERM_REQUEST = 2084
 
     // ─────────────────────────────────────────────────────────────────────────
     // Lifecycle
@@ -52,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     /** Restore all switch/seekbar states from SharedPreferences. */
     private fun restoreSettings() {
+        updateSearchActionLabel()
         binding.switchGestureOverlay.isChecked =
             prefs.getBoolean(Prefs.GESTURE_OVERLAY_ENABLED, true)
         
@@ -75,6 +72,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+        binding.btnSearchAction.setOnClickListener {
+            val actions = arrayOf(getString(R.string.app_name), getString(R.string.google_lens))
+            val selected = if (prefs.getBoolean(Prefs.USE_GOOGLE_LENS, false)) 1 else 0
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.section_search_action)
+                .setSingleChoiceItems(actions, selected) { dialog, choice ->
+                    prefs.edit().putBoolean(Prefs.USE_GOOGLE_LENS, choice == 1).apply()
+                    updateSearchActionLabel()
+                    dialog.dismiss()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
+
         // ── Switch rows — tap anywhere on the row to toggle ─────────────────
 
         binding.rowGestureOverlay.setOnClickListener {
@@ -165,6 +176,15 @@ class MainActivity : AppCompatActivity() {
     // UI state
     // ─────────────────────────────────────────────────────────────────────────
 
+    private fun updateSearchActionLabel() {
+        val action = if (prefs.getBoolean(Prefs.USE_GOOGLE_LENS, false)) {
+            R.string.google_lens
+        } else {
+            R.string.app_name
+        }
+        binding.btnSearchAction.setText(action)
+    }
+
     private fun refreshUi() {
         val running = CtsAccessibilityService.isRunning
 
@@ -186,8 +206,14 @@ class MainActivity : AppCompatActivity() {
                 pillColor = R.color.status_inactive,
                 textColor = R.color.status_inactive,
             )
-            binding.tvStatusDesc.text = getString(R.string.status_desc_stopped)
-            binding.btnAction.text = getString(R.string.btn_activate)
+            val component = ComponentName(this, CtsAccessibilityService::class.java)
+            val enabled = Settings.Secure.getString(
+                contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+            )?.split(':')?.any { ComponentName.unflattenFromString(it) == component } == true
+            binding.tvStatusDesc.setText(
+                if (enabled) R.string.status_desc_waiting else R.string.status_desc_stopped
+            )
+            binding.btnAction.setText(R.string.label_btn_assistant)
             binding.btnAction.backgroundTintList =
                 ContextCompat.getColorStateList(this, R.color.brand_blue)
         }

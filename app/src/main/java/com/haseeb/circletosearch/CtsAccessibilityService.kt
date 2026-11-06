@@ -2,28 +2,26 @@ package com.haseeb.circletosearch
 
 import android.annotation.SuppressLint
 import android.accessibilityservice.AccessibilityService
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.graphics.PixelFormat
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
-import android.os.SystemClock
+import android.os.PowerManager
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.util.Log
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
 import android.view.accessibility.AccessibilityEvent
-import org.lsposed.hiddenapibypass.HiddenApiBypass
+import androidx.core.content.ContextCompat
 import kotlin.math.abs
 
 class CtsAccessibilityService : AccessibilityService() {
@@ -65,6 +63,12 @@ class CtsAccessibilityService : AccessibilityService() {
     private var navIsLongPressing = false
     private var navInitX = 0f
     private var navInitY = 0f
+    private val navLongPress = Runnable {
+        if (navIsLongPressing) {
+            navIsLongPressing = false
+            performTrigger()
+        }
+    }
 
     // Slop thresholds
     private val navSlopPx    by lazy { 14 * resources.displayMetrics.density }
@@ -76,9 +80,26 @@ class CtsAccessibilityService : AccessibilityService() {
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         loadSettings()
         if (key == Prefs.GESTURE_OVERLAY_ENABLED || key == Prefs.GESTURE_AREA_SIZE) {
-            removeNavOverlay()
-            setupOverlays()
+            refreshNavOverlay()
         }
+    }
+
+    private val powerSaveReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (isRunning && getSystemService(PowerManager::class.java)?.isPowerSaveMode == false) {
+                refreshNavOverlay()
+            }
+        }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        ContextCompat.registerReceiver(
+            this,
+            powerSaveReceiver,
+            IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
     }
 
     override fun onServiceConnected() {
@@ -90,7 +111,7 @@ class CtsAccessibilityService : AccessibilityService() {
         getSharedPreferences(Prefs.FILE, Context.MODE_PRIVATE)
             .registerOnSharedPreferenceChangeListener(prefsListener)
             
-        setupOverlays()
+        refreshNavOverlay()
 
         if (launchVibrateEnabled) {
             performLaunchVibration()
@@ -117,12 +138,13 @@ class CtsAccessibilityService : AccessibilityService() {
     override fun onInterrupt() {}
 
     override fun onDestroy() {
-        super.onDestroy()
         isRunning = false
+        unregisterReceiver(powerSaveReceiver)
         getSharedPreferences(Prefs.FILE, Context.MODE_PRIVATE)
             .unregisterOnSharedPreferenceChangeListener(prefsListener)
         handler.removeCallbacksAndMessages(null)
         removeNavOverlay()
+        super.onDestroy()
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -143,7 +165,8 @@ class CtsAccessibilityService : AccessibilityService() {
     // Overlay setup
     // ─────────────────────────────────────────────────────────────────────────
 
-    private fun setupOverlays() {
+    private fun refreshNavOverlay() {
+        removeNavOverlay()
         if (gestureOverlayEnabled) addNavOverlay()
     }
 
@@ -163,11 +186,7 @@ class CtsAccessibilityService : AccessibilityService() {
         val wPx = (widthDp * d).toInt()
         val hPx = (heightDp * d).toInt()
 
-        navOverlayView = View(this).apply {
-            // Uncomment next line to debug bounds visually:
-            // setBackgroundColor(0x55FF0000)
-            setBackgroundColor(0x00000000)
-        }
+        val overlay = View(this)
 
         val params = WindowManager.LayoutParams(
             wPx, hPx,
@@ -180,14 +199,7 @@ class CtsAccessibilityService : AccessibilityService() {
             y = 0
         }
 
-        val navLongPress = Runnable {
-            if (navIsLongPressing) {
-                navIsLongPressing = false
-                performTrigger()
-            }
-        }
-
-        navOverlayView!!.setOnTouchListener { _, event ->
+        overlay.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     navIsLongPressing = true
@@ -218,11 +230,18 @@ class CtsAccessibilityService : AccessibilityService() {
             }
         }
 
-        windowManager.addView(navOverlayView, params)
-        Log.d(TAG, "Nav overlay added")
+        try {
+            windowManager.addView(overlay, params)
+            navOverlayView = overlay
+            Log.d(TAG, "Nav overlay added")
+        } catch (e: WindowManager.BadTokenException) {
+            Log.w(TAG, "Android rejected the navigation overlay", e)
+        }
     }
 
     private fun removeNavOverlay() {
+        navIsLongPressing = false
+        handler.removeCallbacks(navLongPress)
         navOverlayView?.let {
             runCatching { windowManager.removeView(it) }
             navOverlayView = null
@@ -235,8 +254,7 @@ class CtsAccessibilityService : AccessibilityService() {
 
     private fun performTrigger() {
         if (triggerVibrateEnabled) vibrate(vibrationIntensity)
-        val success = triggerCircleToSearch()
-        Log.i(TAG, "Circle to Search trigger result: $success")
+        SearchAction.launch(this)
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -308,63 +326,4 @@ class CtsAccessibilityService : AccessibilityService() {
             @Suppress("DEPRECATION")
             getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // Circle to Search trigger (IVoiceInteractionManagerService reflection)
-    // ─────────────────────────────────────────────────────────────────────────
-
-    /**
-     * Calls the internal Android API `IVoiceInteractionManagerService.showSessionFromSession`
-     * via HiddenApiBypass. This is the same path used by the Samsung Galaxy launcher to
-     * trigger Circle to Search, and does not require root on most devices.
-     *
-     * Bundle keys:
-     *   invocation_time_ms — elapsed realtime at moment of trigger
-     *   omni.entry_point   — 1 = home / gesture source (replicates what the launcher sends)
-     */
-    @SuppressLint("PrivateApi")
-    private fun triggerCircleToSearch(): Boolean {
-        return try {
-            val bundle = Bundle().apply {
-                putLong("invocation_time_ms", SystemClock.elapsedRealtime())
-                putInt("omni.entry_point", 1)
-            }
-
-            val serviceManagerClass = Class.forName("android.os.ServiceManager")
-            val binder = serviceManagerClass
-                .getMethod("getService", String::class.java)
-                .invoke(null, "voiceinteraction") as? IBinder
-                ?: run {
-                    Log.e(TAG, "voiceinteraction service binder is null")
-                    return false
-                }
-
-            val iVimsClass = Class.forName(
-                "com.android.internal.app.IVoiceInteractionManagerService"
-            )
-            val stub = Class.forName(
-                "com.android.internal.app.IVoiceInteractionManagerService\$Stub"
-            )
-            val vims = stub.getMethod("asInterface", IBinder::class.java).invoke(null, binder)
-
-            val result = if (Build.VERSION.SDK_INT >= 34) {
-                HiddenApiBypass.invoke(
-                    iVimsClass, vims,
-                    "showSessionFromSession",
-                    null, bundle, 7, "circle_to_search"
-                )
-            } else {
-                HiddenApiBypass.invoke(
-                    iVimsClass, vims,
-                    "showSessionFromSession",
-                    null, bundle, 7
-                )
-            }
-
-            result as? Boolean ?: false
-        } catch (e: Exception) {
-            Log.e(TAG, "triggerCircleToSearch failed", e)
-            false
-        }
-    }
 }
