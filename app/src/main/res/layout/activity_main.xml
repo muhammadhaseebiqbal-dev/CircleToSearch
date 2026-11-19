@@ -483,6 +483,26 @@
                             app:backgroundTint="@color/brand_blue_subtle"
                             app:cornerRadius="16dp"
                             android:textColor="@color/brand_blue" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="12dp"
+                            android:text="@string/label_voice_assistant_sub"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp"
+                            android:lineSpacingMultiplier="1.2" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnVoiceAssistantSettings"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_voice_assistant"
+                            app:backgroundTint="@color/brand_blue_subtle"
+                            app:cornerRadius="16dp"
+                            android:textColor="@color/brand_blue" />
                     </LinearLayout>
 
                 </LinearLayout>

@@ -37,6 +37,8 @@
     <string name="label_gesture_size_sub">Increase for better accuracy</string>
     <string name="label_btn_assistant">Accessibility Settings</string>
     <string name="label_btn_assistant_sub">Enable the Circle to Search shortcut in Accessibility settings to use the accessibility button.</string>
+    <string name="label_voice_assistant">Voice assistant</string>
+    <string name="label_voice_assistant_sub">Choose your default voice assistant in Android settings.</string>
     <string name="label_sensitivity">Long-press sensitivity</string>
     <string name="label_sensitivity_sub">Hold duration before triggering</string>
     <string name="label_launch_vibrate">Vibrate on activation</string>

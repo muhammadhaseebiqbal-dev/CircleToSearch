@@ -115,6 +115,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
         }
 
+        binding.btnVoiceAssistantSettings.setOnClickListener {
+            openVoiceAssistantSettings()
+        }
+
         binding.rowLaunchVibrate.setOnClickListener {
             val newVal = !binding.switchLaunchVibrate.isChecked
             binding.switchLaunchVibrate.isChecked = newVal
@@ -170,6 +174,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun restartServiceIfRunning() {
         // Now handled completely by the SharedPrefs listener in CtsAccessibilityService
+    }
+
+    /** Opens Android's page for choosing the default voice assistant. */
+    private fun openVoiceAssistantSettings() {
+        val voiceInputSettings = Intent(Settings.ACTION_VOICE_INPUT_SETTINGS)
+        if (voiceInputSettings.resolveActivity(packageManager) != null) {
+            startActivity(voiceInputSettings)
+        } else {
+            // Some device vendors do not expose the dedicated page. Their default-apps
+            // settings still contain the digital assistant selection.
+            startActivity(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
