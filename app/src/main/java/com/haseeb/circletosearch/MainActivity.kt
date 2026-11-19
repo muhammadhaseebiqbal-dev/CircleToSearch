@@ -73,12 +73,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnSearchAction.setOnClickListener {
-            val actions = arrayOf(getString(R.string.app_name), getString(R.string.google_lens))
-            val selected = if (prefs.getBoolean(Prefs.USE_GOOGLE_LENS, false)) 1 else 0
+            val actions = arrayOf(
+                getString(R.string.app_name),
+                getString(R.string.google_lens),
+                getString(R.string.google_gemini)
+            )
+            val selected = when {
+                prefs.getBoolean(Prefs.USE_GOOGLE_GEMINI, false) -> 2
+                prefs.getBoolean(Prefs.USE_GOOGLE_LENS, false) -> 1
+                else -> 0
+            }
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.section_search_action)
                 .setSingleChoiceItems(actions, selected) { dialog, choice ->
-                    prefs.edit().putBoolean(Prefs.USE_GOOGLE_LENS, choice == 1).apply()
+                    prefs.edit()
+                        .putBoolean(Prefs.USE_GOOGLE_LENS, choice == 1)
+                        .putBoolean(Prefs.USE_GOOGLE_GEMINI, choice == 2)
+                        .apply()
                     updateSearchActionLabel()
                     dialog.dismiss()
                 }
@@ -113,6 +124,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnAssistantSettings.setOnClickListener {
             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+        }
+
+        binding.btnVoiceAssistantSettings.setOnClickListener {
+            openVoiceAssistantSettings()
         }
 
         binding.rowLaunchVibrate.setOnClickListener {
@@ -172,15 +187,27 @@ class MainActivity : AppCompatActivity() {
         // Now handled completely by the SharedPrefs listener in CtsAccessibilityService
     }
 
+    /** Opens Android's page for choosing the default voice assistant. */
+    private fun openVoiceAssistantSettings() {
+        val voiceInputSettings = Intent(Settings.ACTION_VOICE_INPUT_SETTINGS)
+        if (voiceInputSettings.resolveActivity(packageManager) != null) {
+            startActivity(voiceInputSettings)
+        } else {
+            // Some device vendors do not expose the dedicated page. Their default-apps
+            // settings still contain the digital assistant selection.
+            startActivity(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
+        }
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
     // UI state
     // ─────────────────────────────────────────────────────────────────────────
 
     private fun updateSearchActionLabel() {
-        val action = if (prefs.getBoolean(Prefs.USE_GOOGLE_LENS, false)) {
-            R.string.google_lens
-        } else {
-            R.string.app_name
+        val action = when {
+            prefs.getBoolean(Prefs.USE_GOOGLE_GEMINI, false) -> R.string.google_gemini
+            prefs.getBoolean(Prefs.USE_GOOGLE_LENS, false) -> R.string.google_lens
+            else -> R.string.app_name
         }
         binding.btnSearchAction.setText(action)
     }

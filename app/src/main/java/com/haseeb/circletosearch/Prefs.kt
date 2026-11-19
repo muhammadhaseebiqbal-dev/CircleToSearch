@@ -4,6 +4,7 @@ package com.haseeb.circletosearch
 object Prefs {
     const val FILE = "cts_settings"
     const val USE_GOOGLE_LENS = "use_google_lens"
+    const val USE_GOOGLE_GEMINI = "use_google_gemini"
 
     // Overlay settings
     const val GESTURE_OVERLAY_ENABLED = "gesture_overlay_enabled"
